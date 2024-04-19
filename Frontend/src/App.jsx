@@ -1,15 +1,16 @@
-import Home from "./components/Home"
-import Sidebar from "./components/Sidebar"
-
+import { Routes, Route, Navigate} from "react-router-dom";
 
 function App() {
 
   return (
     <>
-      <div className="flex flex-row bg-[#22223B]">
-        <Sidebar />
-        <Home />
-      </div>
+      <Routes>
+        <Route path="*" element={<Navigate to="/configs" />}></Route>
+        <Route path="/home" />
+        <Route path="/configs" />
+        <Route path="/profile" />
+      </Routes>
+      
     </>
   )
 }
