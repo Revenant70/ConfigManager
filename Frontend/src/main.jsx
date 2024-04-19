@@ -9,9 +9,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import Home from './components/Home.jsx';
-import Configs from './components/Configs.jsx';
-import Profile from './components/Profile.jsx'
+import Home from './components/HomePage.jsx';
+import Configs from './components/ConfigPage.jsx';
+import Profile from './components/ProfilePage.jsx'
 
 const router = createBrowserRouter([
   {
