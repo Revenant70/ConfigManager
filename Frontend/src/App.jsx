@@ -5,10 +5,13 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="*" element={<Navigate to="/configs" />}></Route>
+        <Route path="*" element={<Navigate to="/auth" />}></Route>
         <Route path="/home" />
         <Route path="/configs" />
         <Route path="/profile" />
+        <Route path="/signup" />
+        <Route path="/forgotpassword" />
+        <Route path="/changeuserpassword" />
       </Routes>
       
     </>
