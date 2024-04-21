@@ -8,7 +8,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ConfigLayout() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [configCards, setConfigCards] = useState([]);
 
   const [configName, setConfigName] = useState();
@@ -392,7 +392,7 @@ export default function ConfigLayout() {
               <div key={index} className="p-4 rounded-md">
                 <pre
                   ref={codeBlockRef}
-                  className="bg-[#202127] p-4 rounded-xl overflow-auto"
+                  className="bg-[#202127] p-4 rounded-xl overflow-hidden"
                 >
                   <div className="flex flex-row justify-between">
                     <div className="bg-[#32363F] rounded-lg w-9 h-9 flex justify-center items-center text-[#B892FF]">
@@ -410,7 +410,7 @@ export default function ConfigLayout() {
                     </div>
                   </div>
 
-                  <code className="text-md text-[#deded6] font-mono">
+                  <code className="text-md text-[#deded6] font-mono ">
                     {configCard.content}
                   </code>
                 </pre>

@@ -1,0 +1,1 @@
+export const serveraddress = "https://configmanager.jpm-be.me";
