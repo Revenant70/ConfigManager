@@ -1,13 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-regular-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ConfigLayout() {
+  const [isOpen, setIsOpen] = useState(true);
   const [configCards, setConfigCards] = useState([]);
+
+  const [configName, setConfigName] = useState();
+  const [content, setContent] = useState();
+
   const codeBlockRef = useRef(null);
 
   const mockConfigs = [
@@ -64,10 +70,10 @@ export default function ConfigLayout() {
           `,
     },
     {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -88,12 +94,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -114,12 +120,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -140,12 +146,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -166,12 +172,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -192,12 +198,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -218,12 +224,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -244,12 +250,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -270,12 +276,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -296,12 +302,12 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
               worker_processes 2;
               events {
                   worker_connections 2048;
@@ -322,34 +328,36 @@ export default function ConfigLayout() {
                   }
               }
             `,
-      },
-      {
-        id: 2,
-        name: "Config 2",
-        description: "This is the second configuration",
-        content: `
-              worker_processes 2;
-              events {
-                  worker_connections 2048;
-              }
+    },
+    {
+      id: 2,
+      name: "Config 2",
+      description: "This is the second configuration",
+      content: `
+    worker_processes 2;
+    events {
+        worker_connections 2048;
+    }
               
-              http {
-                  server {
-                      listen 8080;
-                      server_name example.net;
-                      location / {
-                          proxy_pass http://localhost:4000;
-                          proxy_http_version 1.1;
-                          proxy_set_header Upgrade $http_upgrade;
-                          proxy_set_header Connection 'upgrade';
-                          proxy_set_header Host $host;
-                          proxy_cache_bypass $http_upgrade;
-                      }
-                  }
-              }
+    http {
+        server {
+            listen 8080;
+            server_name example.net;
+            location / {
+                proxy_pass http://localhost:4000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+            }
+        }
+    }
             `,
-      },
+    },
   ];
+
+  // TODO - Make the clipboard and file title absolute within the card and not move around with the text
 
   useEffect(() => {
     setConfigCards(mockConfigs);
@@ -367,9 +375,18 @@ export default function ConfigLayout() {
     }
   };
 
+  const openCreateNewCard = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const createNewCard = async (e) => {
+    e.preventDefault();
+    console.log(e);
+  };
+
   return (
     <>
-      <div className="grid gap-8 grid-cols-3 w-full">
+      <div className="grid gap-2 grid-cols-3 w-full">
         {configCards.length > 0
           ? configCards.map((configCard, index) => (
               <div key={index} className="p-4 rounded-md">
@@ -389,10 +406,10 @@ export default function ConfigLayout() {
                       </motion.button>
                     </div>
                     <div className="text-lg text-[#B892FF] rounded-lg h-9 flex justify-end p-2 items-center bg-[#32363F]">
-                        {configCard.name}
+                      {configCard.name}
                     </div>
                   </div>
-  
+
                   <code className="text-md text-[#deded6] font-mono">
                     {configCard.content}
                   </code>
@@ -401,8 +418,55 @@ export default function ConfigLayout() {
             ))
           : null}
       </div>
+      <div className="fixed right-12 bottom-12 bg-[#32363F] text-[#B892FF] w-16 h-16 opacity-35 rounded-lg flex justify-center items-center">
+        <button onClick={openCreateNewCard}>
+          <FontAwesomeIcon icon={faPlus} size="2xl" />
+        </button>
+      </div>
+      <div>
+        <AnimatePresence>
+          {isOpen && (
+              <motion.form
+                onSubmit={createNewCard}
+                className="bg-[#161618] text-[#deded6] w-1/4 min-h-96 h-3/5 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 drop-shadow-lg rounded-xl flex justify-center items-center align-middle"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div className="p-4 h-full flex justify-start items-center flex-col">
+                  <h2 className="text-4xl font-bold text-center pt-2 pb-4">
+                      Enter Config details below
+                    </h2>
+                    <label className="label m-4">
+                      <span className="label-text text-3xl">Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="config name"
+                      onChange={(e) => setConfigName(e.target.value)}
+                      className="input input-bordered rounded-xl pl-2 h-12 w-5/6"
+                    />
+                  <div className="form-control flex justify-center items-center flex-col">
+                    <label className="label m-6">
+                      <span className="label-text text-3xl">Content</span>
+                    </label>
+                    <textarea
+                      rows="4"
+                      cols="50"
+                      type="text"
+                      placeholder="config content"
+                      onChange={(e) => setContent(e.target.value)}
+                      className="input input-bordered w-5/6 rounded-xl p-2 max-h-10/12"
+                    />
+                  </div>
+                  <button className="text-lg bg-[#32363F] w-32 h-12 rounded-xl mt-7 text-[#B892FF]"
+                    onClick={openCreateNewCard}
+                  >Submit task</button>
+                </motion.div>
+              </motion.form>
+          )}
+        </AnimatePresence>
+      </div>
     </>
   );
-  
-  
 }
