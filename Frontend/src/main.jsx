@@ -8,7 +8,6 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 
-import Home from './components/HomePage.jsx';
 import Configs from './components/ConfigPage.jsx';
 import Profile from './components/ProfilePage.jsx';
 import Auth from './components/Auth.jsx';
@@ -42,7 +41,7 @@ const router = createBrowserRouter([
     element: <ForgotPassword />
   },
   {
-    path: "/auth/forgotpassword/changepassword",
+    path: "/auth/forgotpassword/changepassword/:userId/:token",
     element: <ChangeUserPassword />
   }
 ]);

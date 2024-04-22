@@ -9,8 +9,8 @@ function App() {
         <Route path="/configs" />
         <Route path="/profile" />
         <Route path="/signup" />
-        <Route path="/forgotpassword" />
-        <Route path="/changeuserpassword" />
+        <Route path="/auth/forgotpassword" />
+        <Route path="/auth/forgotpassword/changepassword/:userId/:token" />
       </Routes>
       
     </>

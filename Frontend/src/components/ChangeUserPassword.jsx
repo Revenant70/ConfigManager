@@ -15,7 +15,7 @@ export default function ChangeUserPassword() {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   function sendBackToPasswordRecovery() {
-    navigate("/auth/passwordrecovery");
+    navigate("/auth/forgotpassword");
   }
 
   function passwordCheck() {
@@ -25,7 +25,6 @@ export default function ChangeUserPassword() {
   useEffect(() => {
     const authenticateToken = async () => {
       try {
-      console.log(token, userId);
         const response = await axios.post(
           `${serveraddress}/api/users/authenticate-token`,
           {
@@ -33,10 +32,9 @@ export default function ChangeUserPassword() {
             token,
           }
         );
-
       } catch (error) {
-        navigate("/auth/passwordrecovery")
         console.error(error.message);
+        navigate("/auth/forgotpassword")
       }
     };
 
