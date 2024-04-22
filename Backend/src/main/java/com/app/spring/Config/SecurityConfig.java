@@ -32,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.authorizeHttpRequests(auth -> {
 
-                        auth.requestMatchers("/api/**").hasAuthority(Role.USER.name());
+                        auth.requestMatchers("/api/config/**").hasAuthority(Role.USER.name());
                         auth.requestMatchers("/","/api/users/**").permitAll();
                         auth.anyRequest().authenticated();
                         })

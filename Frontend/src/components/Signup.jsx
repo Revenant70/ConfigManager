@@ -29,14 +29,17 @@ export default function Signup() {
             email: email,
           }
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
         // Check if the response data indicates success (you might customize this based on your API response)
           navigate("/auth");
-      } else {
+      } else if (response.status == 409) {
         // Handle unexpected status codes
-        console.log("Unexpected response status:", response.status);
+        console.log("Username is already taken:", response.status);
+      } else {
+        console.log("There was a problem with the server", response.status);
       }
     } catch (error) {
+      console.log(error)
       console.error("Error during signup:", error.message);
     }
   };
@@ -68,7 +71,7 @@ export default function Signup() {
                 </label>
                 <input
                     type="text"
-                    placeholder="user name"
+                    placeholder="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="input input-bordered"

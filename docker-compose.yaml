@@ -3,13 +3,13 @@ version: '3.8'
 services:
   postgres:
     image: postgres
-    container_name: my-postgres-db
+    container_name: ConfigDBContainer
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: ConfigDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ThisNewConfig
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -17,15 +17,15 @@ services:
     build:
       context: /Backend
       dockerfile: Dockerfile
-    container_name: my-spring-boot-app
+    container_name: ConfigManager
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - postgres
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ConfigDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ThisNewConfig
 
 volumes:
   postgres_data:

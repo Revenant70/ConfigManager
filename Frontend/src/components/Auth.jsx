@@ -20,7 +20,7 @@ export default function Auth() {
       );
       if (response.status == 200) {
         localStorage.setItem("JWT", response.data);
-        navigate("/body");
+        navigate("/configs");
       }
     } catch (e) {
       console.log("Login failed", e.message);

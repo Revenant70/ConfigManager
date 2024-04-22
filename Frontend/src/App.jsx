@@ -6,7 +6,6 @@ function App() {
     <>
       <Routes>
         <Route path="*" element={<Navigate to="/auth" />}></Route>
-        <Route path="/home" />
         <Route path="/configs" />
         <Route path="/profile" />
         <Route path="/signup" />
