@@ -66,5 +66,17 @@ public class AuthController {
         }
 
     }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody UserEntity userEntity) {
+        try {
+            authService.resetPassword(userEntity);
+            return new ResponseEntity<>("Password successfully reset", HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+            return new ResponseEntity<>("There was a problem resetting user password", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
     
 }

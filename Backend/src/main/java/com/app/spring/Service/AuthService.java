@@ -109,4 +109,10 @@ public class AuthService {
         }
     }
 
+    public void resetPassword(UserEntity userEntity) {
+        UserEntity dbUserEntity = userRepository.findByUserid(userEntity.getUserid());
+        dbUserEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userRepository.save(dbUserEntity);
+    }
+
 }
