@@ -17,6 +17,7 @@ import java.util.List;
 @Data
 @DynamicUpdate
 @DynamicInsert
+@NoArgsConstructor
 public class UserEntity implements UserDetails {
 
     @Id
