@@ -48,7 +48,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="hero min-h-screen bg-base-200 flex justify-center align-middle flex-col">
+    <div className="hero min-h-screen bg-[#202127] flex justify-center align-middle flex-col">
       <div className="fixed top-10 left-10">
         <FontAwesomeIcon
           className="btn btn-sm"
@@ -64,7 +64,7 @@ export default function ForgotPassword() {
             link to reset your password
           </p>
         </div>
-        <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <div className="card shrink-0 w-full max-w-sm shadow-2xl #202127">
           <form className="card-body" onSubmit={confirmationPopup}>
             <div className="form-control">
               <label className="label">

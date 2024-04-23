@@ -86,12 +86,12 @@ export default function Profile() {
 
   return (
     <>
-      <div className="flex flex-col bg-[#202127]">
+      <div className="flex flex-col bg-[#1b1b1f]">
         <Sidebar />
         <div className="fixed top-10 left-10 z-50"></div>
         <div className="min-h-screen flex items-center justify-center">
           <motion.div
-            className="bg-base-200 drop-shadow-lg p-8 rounded-lg w-96"
+            className="bg-[#202127] drop-shadow-lg p-8 rounded-lg w-96"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
