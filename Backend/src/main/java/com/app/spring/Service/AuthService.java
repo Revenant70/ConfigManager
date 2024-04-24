@@ -45,11 +45,6 @@ public class AuthService {
         return userEntity;
     }
 
-    public UserEntity login(UserEntity userEntity) {
-        
-        return userEntity;
-    }
-
     public boolean doesUserExist(UserEntity userEntity) {
         if (userRepository.findByUsername(userEntity.getUsername()) == null) {
             return false;

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.app.spring.Entity.ResetToken;
 import com.app.spring.Entity.UserEntity;
 import com.app.spring.Service.AuthService;
+import com.app.spring.Service.JwtService;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,6 +20,9 @@ public class AuthController {
     
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private JwtService jwtService;
     
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody UserEntity userSignupEntity) {
@@ -41,7 +46,9 @@ public class AuthController {
             return new ResponseEntity<String>("Passwords did not match", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<String>("login successful", HttpStatus.OK);
+        String token = jwtService.generateToken(userEntity.getUsername());
+
+        return new ResponseEntity<String>(token, HttpStatus.OK);
     }
 
     @PostMapping("/forgot-password")

@@ -26,15 +26,14 @@ import lombok.NoArgsConstructor;
 public class ConfigsEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "configid")
     private Long configid;
 
     @Column(name = "name")
     private String name;
 
-    @Lob
-    @Column(name = "content")
+    @Column(columnDefinition = "LONGTEXT", name="content")
     private String content;
 
     @ManyToOne

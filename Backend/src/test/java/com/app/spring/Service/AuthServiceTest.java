@@ -45,18 +45,6 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void testLogin() {
-        // Prepare test data
-        UserEntity userEntity = new UserEntity();
-
-        // Perform the method to test
-        UserEntity loggedInUser = authService.login(userEntity);
-
-        // Verify that the same user is returned
-        assertEquals(userEntity, loggedInUser);
-    }
-
-    @Test
     public void testDoesUserExist_UserExists() {
         // Prepare test data
         UserEntity userEntity = new UserEntity();
