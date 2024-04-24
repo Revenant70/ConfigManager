@@ -20,6 +20,8 @@ export default function ConfigLayout() {
 
   const [configName, setConfigName] = useState();
   const [content, setContent] = useState();
+  const [configId, setconfigId] = useState();
+
 
   const codeBlockRef = useRef(null);
 
@@ -87,11 +89,35 @@ export default function ConfigLayout() {
         },
       });
       if (response.status === 201) {
-        console.log("Task added");
+        console.log("Config added");
         fetchConfigCards();
       }
     } catch (e) {
       console.log("Failed to add config to system: ", e.message);
+    }
+  };
+
+  const editExistingConfig = async (e) => {
+    console.log(configId)
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("JWT");
+      const response = await axios.put(`${serveraddress}/api/config/${configId}`, 
+      {
+        "name": configName,
+        "content": content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        console.log("Config edited");
+        fetchConfigCards();
+      }
+    } catch (e) {
+      console.log("Failed to edit config: ", e.message);
     }
   };
 
@@ -106,6 +132,10 @@ export default function ConfigLayout() {
   const openCreateNewCard = () => {
     setCreateCardOpen(!createCardOpen);
   };
+
+  const openEditCard = () => {
+    setEditCardOpen(!editCardOpen);
+  }
 
   return (
     <>
@@ -131,7 +161,6 @@ export default function ConfigLayout() {
             className={`p-4 rounded-md ${expandedIndex === index ? 'absolute inset-0 m-auto left-0 right-0 top-0 bottom-0 z-40' : ''}`}
             transition={{ duration: 0.3 }}
           >
-
             <motion.pre
               ref={codeBlockRef}
               className="bg-[#202127] p-4 rounded-xl overflow-hidden h-[44vh] relative"
@@ -153,7 +182,10 @@ export default function ConfigLayout() {
               </code>
               <motion.button className="absolute left-4 bottom-4 text-[#B892FF] bg-[#32363F] rounded-md h-9 w-9 flex justify-center items-center"
                 whileTap={{ scale: 0.85 }}
-                onClick={() => onCardClick(index)}
+                onClick={() => {
+                  setconfigId(configCard.configid)
+                  openEditCard()
+                }}
               >
                 <FontAwesomeIcon icon={faPenToSquare}  size="md"/>
               </motion.button>
@@ -213,6 +245,52 @@ export default function ConfigLayout() {
                 <button
                   className="text-lg bg-[#32363F] w-32 h-12 rounded-xl mt-9 text-[#B892FF]"
                   onClick={openCreateNewCard}
+                >
+                  Submit task
+                </button>
+              </motion.div>
+            </motion.form>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {editCardOpen && (
+            <motion.form
+              onSubmit={editExistingConfig}
+              className="bg-[#32363F] text-[#deded6] w-1/4 min-h-96 h-3/5 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 drop-shadow-lg rounded-xl flex justify-center items-center align-middle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div className="p-4 h-full flex justify-center items-center flex-col">
+                <h2 className="text-4xl font-bold text-center pt-2 pb-4">
+                  Enter new config name/content
+                </h2>
+                <label className="label m-4">
+                  <span className="label-text text-3xl">Name</span>
+                </label>
+                <input
+                  type="text"
+                  maxLength={30}
+                  placeholder="config name"
+                  onChange={(e) => setConfigName(e.target.value)}
+                  className="input input-bordered rounded-xl pl-2 h-12 w-5/6"
+                />
+                <div className="form-control flex justify-center items-center flex-col">
+                  <label className="label m-6">
+                    <span className="label-text text-3xl">Content</span>
+                  </label>
+                  <textarea
+                    rows="4"
+                    cols="50"
+                    type="text"
+                    placeholder="config content"
+                    onChange={(e) => setContent(e.target.value)}
+                    className="input input-bordered w-5/6 rounded-xl p-2 max-h-10/12"
+                  />
+                </div>
+                <button
+                  className="text-lg bg-[#161618] w-32 h-12 rounded-xl mt-9 text-[#B892FF]"
+                  onClick={openEditCard}
                 >
                   Submit task
                 </button>
