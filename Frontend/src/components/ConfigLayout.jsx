@@ -4,13 +4,16 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { useEffect, useRef } from "react";
 import { useState } from "react";
+import axios from "axios";
+import { serveraddress } from "../api/serveraddress";
 
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ConfigLayout() {
   const [createCardOpen, setCreateCardOpen] = useState(false);
-  const [observeConfigCard, setObserveConfigCard] = useState(false);
   const [configCards, setConfigCards] = useState([]);
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [importCard, setImportCard] = useState(null);
 
   const [configName, setConfigName] = useState();
   const [content, setContent] = useState();
@@ -37,364 +40,69 @@ export default function ConfigLayout() {
     visible: i => ({
       opacity: 1,
       transition: {
-        delay: i * 0.050,
+        delay: i * 0.090,
       },
     }),
     hidden: { opacity: 0 },
   }
 
-  const mockConfigs = [
-    {
-      id: 1,
-      name: "Config 1",
-      description: "This is the first configuration",
-      content: `
-            worker_processes 1;
-            events {
-                worker_connections 1024;
-            }
-            
-            http {
-                server {
-                    listen 80;
-                    server_name example.com;
-                    location / {
-                        proxy_pass http://localhost:3000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 2,
-      name: "Config 2",
-      description: "This is the second configuration",
-      content: `
-            worker_processes 2;
-            events {
-                worker_connections 2048;
-            }
-            
-            http {
-                server {
-                    listen 8080;
-                    server_name example.net;
-                    location / {
-                        proxy_pass http://localhost:4000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 1,
-      name: "Config 1",
-      description: "This is the first configuration",
-      content: `
-            worker_processes 1;
-            events {
-                worker_connections 1024;
-            }
-            
-            http {
-                server {
-                    listen 80;
-                    server_name example.com;
-                    location / {
-                        proxy_pass http://localhost:3000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 2,
-      name: "Config 2",
-      description: "This is the second configuration",
-      content: `
-            worker_processes 2;
-            events {
-                worker_connections 2048;
-            }
-            
-            http {
-                server {
-                    listen 8080;
-                    server_name example.net;
-                    location / {
-                        proxy_pass http://localhost:4000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 1,
-      name: "Config 1",
-      description: "This is the first configuration",
-      content: `
-            worker_processes 1;
-            events {
-                worker_connections 1024;
-            }
-            
-            http {
-                server {
-                    listen 80;
-                    server_name example.com;
-                    location / {
-                        proxy_pass http://localhost:3000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 2,
-      name: "Config 2",
-      description: "This is the second configuration",
-      content: `
-            worker_processes 2;
-            events {
-                worker_connections 2048;
-            }
-            
-            http {
-                server {
-                    listen 8080;
-                    server_name example.net;
-                    location / {
-                        proxy_pass http://localhost:4000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 1,
-      name: "Config 1",
-      description: "This is the first configuration",
-      content: `
-            worker_processes 1;
-            events {
-                worker_connections 1024;
-            }
-            
-            http {
-                server {
-                    listen 80;
-                    server_name example.com;
-                    location / {
-                        proxy_pass http://localhost:3000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 2,
-      name: "Config 2",
-      description: "This is the second configuration",
-      content: `
-            worker_processes 2;
-            events {
-                worker_connections 2048;
-            }
-            
-            http {
-                server {
-                    listen 8080;
-                    server_name example.net;
-                    location / {
-                        proxy_pass http://localhost:4000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 1,
-      name: "Config 1",
-      description: "This is the first configuration",
-      content: `
-            worker_processes 1;
-            events {
-                worker_connections 1024;
-            }
-            
-            http {
-                server {
-                    listen 80;
-                    server_name example.com;
-                    location / {
-                        proxy_pass http://localhost:3000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 2,
-      name: "Config 2",
-      description: "This is the second configuration",
-      content: `
-            worker_processes 2;
-            events {
-                worker_connections 2048;
-            }
-            
-            http {
-                server {
-                    listen 8080;
-                    server_name example.net;
-                    location / {
-                        proxy_pass http://localhost:4000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 1,
-      name: "Config 1",
-      description: "This is the first configuration",
-      content: `
-            worker_processes 1;
-            events {
-                worker_connections 1024;
-            }
-            
-            http {
-                server {
-                    listen 80;
-                    server_name example.com;
-                    location / {
-                        proxy_pass http://localhost:3000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
-    {
-      id: 2,
-      name: "Config 2",
-      description: "This is the second configuration",
-      content: `
-            worker_processes 2;
-            events {
-                worker_connections 2048;
-            }
-            
-            http {
-                server {
-                    listen 8080;
-                    server_name example.net;
-                    location / {
-                        proxy_pass http://localhost:4000;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection 'upgrade';
-                        proxy_set_header Host $host;
-                        proxy_cache_bypass $http_upgrade;
-                    }
-                }
-            }
-          `,
-    },
+  const fetchConfigCards = async () => {
+    try {
+      const token = localStorage.getItem("JWT");
+      const result = await axios.get(`${serveraddress}/api/config`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (result.data.isEmpty) {
+        console.log("No data");
+      } else {
+        setConfigCards(result.data);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-    
-  ];
-
-  // TODO - Make the clipboard and file title absolute within the card and not move around with the text
+  const createNewConfig = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("JWT");
+      const response = await axios.post(`${serveraddress}/api/config`, 
+      {
+        "name": configName,
+        "content": content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 201) {
+        console.log("Task added");
+        fetchConfigCards();
+      }
+    } catch (e) {
+      console.log("Failed to add config to system: ", e.message);
+    }
+  };
 
   useEffect(() => {
-    setConfigCards(mockConfigs);
-  }, [mockConfigs]);
+    fetchConfigCards()
+  }, []);
 
-  const copyCodeToClipboard = () => {
-    const codeBlock = codeBlockRef.current;
-    if (codeBlock) {
-      const textArea = document.createElement("textarea");
-      textArea.value = codeBlock.innerText;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-    }
+  const copyCodeToClipboard = (text) => {
+    navigator.clipboard.writeText(text)
   };
 
   const openCreateNewCard = () => {
     setCreateCardOpen(!createCardOpen);
   };
 
-  const createNewCard = async (e) => {
-    e.preventDefault();
-    console.log(e);
-  };
-
-  const openObserveConfig = () => {
-    setObserveConfigCard(!observeConfigCard);
-  }
-
   return (
     <>
       <motion.div
-        className="grid gap-2 grid-cols-3 w-full"
+        className="grid grid-cols-3 gap-2 w-full"
         variants={list}
         initial="hidden"
         animate="visible"
@@ -402,25 +110,25 @@ export default function ConfigLayout() {
       >
         {configCards.map((configCard, index) => (
           <motion.div
-            key={index}
+            layout 
+            key={index.id}
             custom={index}
             initial="hidden"
-            animate="visible"
+            animate={"visible"}
             exit="hidden"
             variants={variants}
-            className="p-4 rounded-md cursor-pointer"
+            className={`p-4 rounded-md cursor-pointer`}
           >
             <pre
               ref={codeBlockRef}
-              className="bg-[#202127] p-4 rounded-xl overflow-hidden"
+              className="bg-[#202127] p-4 rounded-xl overflow-hidden h-[44vh]"
             >
               <div className="flex flex-row justify-between">
                 <div className="bg-[#32363F] rounded-lg w-9 h-9 flex justify-center items-center text-[#B892FF]">
                   <motion.button
                     className=""
-                    onClick={copyCodeToClipboard}
-                    whileTap={{ scale: 0.8 }}
-                    transition={{ duration: 0.05 }}
+                    onClick={() => copyCodeToClipboard(configCard.content)}
+                    whileTap={{ scale: 0.85 }}
                   >
                     <FontAwesomeIcon icon={faClipboard} size="lg" />
                   </motion.button>
@@ -430,7 +138,7 @@ export default function ConfigLayout() {
                 </div>
               </div>
 
-              <code className="text-md text-[#deded6] font-mono ">
+              <code className="text-sm text-[#deded6] font-mono ">
                 {configCard.content}
               </code>
             </pre>
@@ -446,13 +154,13 @@ export default function ConfigLayout() {
         <AnimatePresence>
           {createCardOpen && (
             <motion.form
-              onSubmit={createNewCard}
+              onSubmit={createNewConfig}
               className="bg-[#161618] text-[#deded6] w-1/4 min-h-96 h-3/5 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 drop-shadow-lg rounded-xl flex justify-center items-center align-middle"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <motion.div className="p-4 h-full flex justify-start items-center flex-col">
+              <motion.div className="p-4 h-full flex justify-center items-center flex-col">
                 <h2 className="text-4xl font-bold text-center pt-2 pb-4">
                   Enter Config details below
                 </h2>
@@ -461,6 +169,7 @@ export default function ConfigLayout() {
                 </label>
                 <input
                   type="text"
+                  maxLength={30}
                   placeholder="config name"
                   onChange={(e) => setConfigName(e.target.value)}
                   className="input input-bordered rounded-xl pl-2 h-12 w-5/6"
@@ -479,7 +188,7 @@ export default function ConfigLayout() {
                   />
                 </div>
                 <button
-                  className="text-lg bg-[#32363F] w-32 h-12 rounded-xl mt-7 text-[#B892FF]"
+                  className="text-lg bg-[#32363F] w-32 h-12 rounded-xl mt-9 text-[#B892FF]"
                   onClick={openCreateNewCard}
                 >
                   Submit task
@@ -487,9 +196,6 @@ export default function ConfigLayout() {
               </motion.div>
             </motion.form>
           )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {observeConfigCard && <div></div>}
         </AnimatePresence>
       </div>
     </>
