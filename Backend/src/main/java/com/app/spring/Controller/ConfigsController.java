@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -59,6 +62,18 @@ public class ConfigsController {
             return new ResponseEntity<>("There was an internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(configs, HttpStatus.OK);
+    }
+
+    @PutMapping("config/{id}")
+    public ResponseEntity<?> editUserConfig(@PathVariable Long id, @RequestBody ConfigsEntity configsEntity) {
+        try {
+            System.out.println(id + " " + configsEntity);
+            configsService.updateConfig(id, configsEntity);
+            return new ResponseEntity<>("Config updated successfully", HttpStatus.OK);
+       } catch(Exception exception) {
+            System.out.println(exception);
+        return new ResponseEntity<>("Couldn't update config", HttpStatus.INTERNAL_SERVER_ERROR);
+       }
     }
     
     

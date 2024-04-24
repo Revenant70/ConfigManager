@@ -14,4 +14,5 @@ import com.app.spring.Entity.ConfigsEntity;
 @EnableJpaRepositories
 public interface ConfigsRepository extends JpaRepository<ConfigsEntity, Long>  {
     Optional<List<ConfigsEntity>> findByUserUsername(String username);
+    Optional<ConfigsEntity> findByConfigid(Long configid);
 }
