@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import axios from "axios";
@@ -13,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ConfigLayout() {
   const [createCardOpen, setCreateCardOpen] = useState(false);
   const [editCardOpen, setEditCardOpen] = useState(false);
+  const [isThreeButtonCardOpen, setIsThreeButtonCardOpen] = useState(false)
 
   const [configCards, setConfigCards] = useState([]);
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -41,7 +41,6 @@ export default function ConfigLayout() {
     },
   }
 
-
   const variants = {
     visible: i => ({
       opacity: 1,
@@ -51,10 +50,6 @@ export default function ConfigLayout() {
     }),
     hidden: { opacity: 0 },
   }
-
-  const onCardClick = (index) => {
-    setExpandedIndex(index === expandedIndex ? null : index);
-  };
 
   const fetchConfigCards = async () => {
     try {
@@ -98,7 +93,6 @@ export default function ConfigLayout() {
   };
 
   const editExistingConfig = async (e) => {
-    console.log(configId)
     e.preventDefault();
     try {
       const token = localStorage.getItem("JWT");
@@ -121,6 +115,27 @@ export default function ConfigLayout() {
     }
   };
 
+  const deleteExistingConfig = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("JWT");
+      const response = await axios.delete(`${serveraddress}/api/config/${configId}`, 
+      {
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        console.log("Config deleted");
+        fetchConfigCards();
+      }
+    } catch (e) {
+      console.log("Failed to delete config: ", e.message);
+    }
+  };
+
   useEffect(() => {
     fetchConfigCards()
   }, []);
@@ -136,6 +151,18 @@ export default function ConfigLayout() {
   const openEditCard = () => {
     setEditCardOpen(!editCardOpen);
   }
+
+  const openThreeButtonCard = (index) => {
+    if (isThreeButtonCardOpen === index) {
+      setIsThreeButtonCardOpen(null);
+    } else {
+      setIsThreeButtonCardOpen(index);
+    }
+  };
+
+  const onCardClick = (index) => {
+    setExpandedIndex(index === expandedIndex ? null : index);
+  };
 
   return (
     <>
@@ -180,22 +207,51 @@ export default function ConfigLayout() {
               <code className="text-sm text-[#deded6] font-mono ">
                 {configCard.content}
               </code>
-              <motion.button className="absolute left-4 bottom-4 text-[#B892FF] bg-[#32363F] rounded-md h-9 w-9 flex justify-center items-center"
+              <motion.button
+              className="absolute left-4 bottom-4 text-[#B892FF] bg-[#32363F] rounded-md h-9 w-9 flex justify-center items-center"
+              whileTap={{ scale: 0.85 }}
+              variants={list}
+              onClick={() => {
+                setconfigId(configCard.configid);
+                openThreeButtonCard(index)
+              }}
+            >
+              <FontAwesomeIcon icon={faPlus} size="md" />
+            </motion.button>
+            {isThreeButtonCardOpen === index && (
+              <>
+              <motion.button
+                className="absolute left-16 bottom-4 text-[#B892FF] bg-[#32363F] rounded-md h-9 w-9 flex justify-center items-center"
                 whileTap={{ scale: 0.85 }}
-                onClick={() => {
-                  setconfigId(configCard.configid)
-                  openEditCard()
-                }}
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                onClick={() => deleteExistingConfig(index)}
               >
-                <FontAwesomeIcon icon={faPenToSquare}  size="md"/>
+                <FontAwesomeIcon icon={faTrash} />
               </motion.button>
               <motion.button
-              className="absolute right-4 bottom-4 text-[#B892FF] bg-[#32363F] rounded-md h-9 w-9 flex justify-center items-center"
-              whileTap={{ scale: 0.85 }}
-              onClick={() => onCardClick(index)}
+                className="absolute left-28 bottom-4 text-[#B892FF] bg-[#32363F] rounded-md h-9 w-9 flex justify-center items-center"
+                whileTap={{ scale: 0.85 }}
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                onClick={() => openEditCard()}
               >
-                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                <FontAwesomeIcon icon={faPenToSquare} />
               </motion.button>
+              <motion.button
+                className="absolute left-40 bottom-4 text-[#B892FF] bg-[#32363F] rounded-md h-9 w-9 flex justify-center items-center"
+                whileTap={{ scale: 0.85 }}
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                onClick={() => onCardClick(index)}
+              >
+                <FontAwesomeIcon icon={faArrowUpRightFromSquare}/>
+              </motion.button>
+            </>
+            )}
             </motion.pre>
           </motion.div>
         ))}
