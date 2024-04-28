@@ -44,4 +44,16 @@ public class ConfigsService {
             System.out.println(e.getLocalizedMessage());
         }
     }
+
+    public void deleteConfig(Long configId) {
+        try {
+            Optional<ConfigsEntity> dbConfigEntity = configsRepository.findByConfigid(configId);
+            if (dbConfigEntity != null) {
+                configsRepository.deleteById(configId);
+            }
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
 }

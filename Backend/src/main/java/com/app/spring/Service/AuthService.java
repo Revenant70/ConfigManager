@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import com.app.spring.Exception.TokenExpiredException;
 import com.app.spring.Repository.ResetTokenRepository;
 import com.app.spring.Repository.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 // /api/users/signup
@@ -86,6 +88,33 @@ public class AuthService {
             System.out.println(e.getLocalizedMessage());
         }
 
+    }
+
+    public void editUserProfile(UserEntity updatedUser, Authentication authentication) {
+        try {
+            UserEntity dbUserEntity = userRepository.findByUsername(authentication.getName());
+            if (dbUserEntity != null) {
+                if (!updatedUser.getUsername().isEmpty()) {
+                    dbUserEntity.setUsername(updatedUser.getUsername());
+                }
+                if (!updatedUser.getPassword().isEmpty()) {
+                    dbUserEntity.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+                }
+                userRepository.save(dbUserEntity);
+            }
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteUserProfile(Authentication authentication) {
+        try {
+            UserEntity userEntity = userRepository.findByUsername(authentication.getName());
+            userRepository.deleteById(userEntity.getUserid());
+        } catch (Exception exception) {
+            System.out.println(exception.getLocalizedMessage());
+        }
     }
 
     @Transactional

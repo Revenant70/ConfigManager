@@ -3,6 +3,7 @@ package com.app.spring.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,7 +12,9 @@ import com.app.spring.Entity.UserEntity;
 import com.app.spring.Service.AuthService;
 import com.app.spring.Service.JwtService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -49,6 +52,27 @@ public class AuthController {
         String token = jwtService.generateToken(userEntity.getUsername());
 
         return new ResponseEntity<String>(token, HttpStatus.OK);
+    }
+
+    @PutMapping("/edit-profile")
+    public ResponseEntity<?> editUserProfile(@RequestBody UserEntity updatedUser, Authentication authentication)
+            throws Exception {
+        try {
+            authService.editUserProfile(updatedUser, authentication);
+            return new ResponseEntity<String>("Profile edited", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Could not edit profile", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete-profile")
+    public ResponseEntity<?> deleteUserProfile(Authentication authentication) throws Exception {
+        try {
+            authService.deleteUserProfile(authentication);
+            return new ResponseEntity<>("Profile Deleted", HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>("Could not delete profile", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/forgot-password")
