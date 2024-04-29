@@ -9,18 +9,18 @@ Features
 
 # Usage
 
-    Adding a Configuration:
-        Click on the "Plus" button.
-        Enter or paste the configuration text into the provided field.
+Adding a Configuration:
+- Click on the "Plus" button.
+- Enter or paste the configuration text into the provided field.
 
-    Viewing Configurations:
-        All stored configurations will be listed in the dashboard.
-        Click on a configuration to view its contents in detail.
+Viewing Configurations:
+- All stored configurations will be listed in the dashboard.
+- Click on a configuration to view its contents in detail.
 
-    Editing Configurations:
-        Click on the "Edit" button next to a configuration.
-        Make your changes to the configuration text.
-        Save the changes.
+Editing Configurations:
+- Click on the "Edit" button next to a configuration.
+- Make your changes to the configuration text.
+- Save the changes.
 
 # Example
 
