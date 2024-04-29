@@ -29,7 +29,7 @@ Get Started
 
 To start using the Configuration Manager, simply visit our website and sign up for an account. Once logged in, you can begin adding, viewing, and managing your configurations.
 
-![ConfigManager website link](https://configmanager.jacksonmcgillivary.dev/auth)
+[ConfigManager website link](https://configmanager.jacksonmcgillivary.dev/auth)
 
 # Example gif
 ![This gif shows the creation, editing, and deletion of a config item](https://github.com/Revenant70/public-assets/blob/main/Animation.gif)
