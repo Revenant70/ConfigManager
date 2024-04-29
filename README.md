@@ -1,4 +1,5 @@
 # ConfigManager
+![This gif shows the creation, editing, and deletion of a config item](https://github.com/Revenant70/public-assets/blob/main/Animation.gif)
 
 Welcome to the ConfigManager, an application designed to simplify the storage and management of configurations. This README will guide you through the features and usage of the Configuration Manager.
 Features
@@ -30,6 +31,3 @@ Get Started
 To start using the Configuration Manager, simply visit our website and sign up for an account. Once logged in, you can begin adding, viewing, and managing your configurations.
 
 [ConfigManager website link](https://configmanager.jacksonmcgillivary.dev/auth)
-
-# Example gif
-![This gif shows the creation, editing, and deletion of a config item](https://github.com/Revenant70/public-assets/blob/main/Animation.gif)
