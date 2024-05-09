@@ -1,5 +1,5 @@
 # ConfigManager
-![This gif shows the creation, editing, and deletion of a config item](https://github.com/Revenant70/public-assets/blob/main/Animation.gif)
+![This gif shows the creation, editing, and deletion of a config item](https://github.com/Revenant70/public-assets/blob/main/ConfigManager/Animation.gif)
 
 Welcome to the ConfigManager, an application designed to simplify the storage and management of configurations. This README will guide you through the features and usage of the Configuration Manager.
 Features
